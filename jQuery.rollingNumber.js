@@ -7,37 +7,51 @@
 (function($){
 	$.fn.rollingNumber = function(opts){
 		$.each(this, function (i, v){
-			new auto_complete(v,opts);
+			new RollingNumber($(v),opts);
 		});
 	};
 	var RollingNumber = function(el, opts){
-		var that = this,
-		defaultOpts = {
+		var that = this;
+		var defaultOpts = {
 			'hight' : '22',
 			'width' : '16',
 			'dataType' : 'url',//url ,local
 			'url' : 'http://www.youwebsite.com/api/',//url ,local
 			'intervalTime' : '3',//间隔时间
 			'numberSize' : '3',//数字位数
-		},
-		options = $.extends(false,defaultOpts, opts);
+		};
+		var options = $.extend(false,defaultOpts, opts);
 		this.init(el, options);
-	},
-	RollingNumber.protetype = {
+	};
+	RollingNumber.prototype = {
 		init: function(el, options){
-
-
+			console.log(el);
+			var allNumbers = this._initAllNumber(options.numberSize);
+			for(var e in allNumbers){
+				el.append(allNumbers[e]);
+			}
 		},
 		_initAllNumber: function(numberSize){
-			var numbers = new array();
+			var numbers = new Array();
 			for(var i = 0; i < numberSize; i++){
 				numbers.push(this._initNumber());
 			}
 			return numbers;
 		},
 		_initNumber: function(){
-			var bitEl = $('<span class="rollingNumber_bit"><div class="rollingNumber_items" style="position:relative;"></div></span>');
+			var mataEls = this._initMetaNumber();
+			var bitEl = $(
+				'<span class="rollingNumber_bit"><div class="rollingNumber_items" style="position:relative;">'
+				+ mataEls + '</div></span>'
+			);
 			return bitEl;
+		},
+		_initMetaNumber: function(){
+			var result = '';
+			for(var i = 0; i < 10; i++){
+				result += '<span class="rollingNumber_item">'+ i + '</span>';
+			}
+			return result;
 		}
 	};
 })(jQuery);
