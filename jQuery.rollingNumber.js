@@ -7,21 +7,21 @@
 (function($){
 	$.fn.rollingNumber = function(opts){
 		$.each(this, function (i, v){
-			new RollingNumber($(v),opts);
+			return new RollingNumber($(v),opts);
 		});
 	};
 	var RollingNumber = function(el, opts){
 		var that = this;
 		var defaultOpts = {
 			'hight' : '22',
-			'width' : '16',
+			'width' : '16',//一个数字的宽度
 			'dataType' : 'url',//url ,local
 			'url' : 'http://www.youwebsite.com/api/',//url ,local
 			'intervalTime' : '3',//间隔时间
 			'numberSize' : '3',//数字位数
 		};
-		var options = $.extend(false,defaultOpts, opts);
-		this.init(el, options);
+		this.options = $.extend(false,defaultOpts, opts);
+		this.init(el, this.options);
 	};
 	RollingNumber.prototype = {
 		init: function(el, options){
@@ -40,12 +40,13 @@
 		},
 		_initNumber: function(){
 			var mataEls = this._initMetaNumber();
-			var bitEl = $(
-				'<span class="rollingNumber_bit"><div class="rollingNumber_items" style="position:relative;">'
-				+ mataEls + '</div></span>'
-			);
+			var bitElDiv = $('<div class="rollingNumber_items" style="position:relative;float:left;">' + mataEls + '</div>');
+			bitElDiv.css('width', this.options.width);
+			var bitEl = $('<span class="rollingNumber_bit"></span>')
+				.html(bitElDiv);
 			return bitEl;
 		},
+		//生成没个位置的全部数字0-9
 		_initMetaNumber: function(){
 			var result = '';
 			for(var i = 0; i < 10; i++){
