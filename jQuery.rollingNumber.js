@@ -29,7 +29,6 @@
 			for(var e in allNumbers){
 				el.append(allNumbers[e]);
 			}
-			el.append('<div style="clear: both;"></div>');
 		},
 		_initAllNumber: function(numberSize){
 			var numbers = new Array();
@@ -40,19 +39,10 @@
 		},
 		_initNumber: function(){
 			var mataEls = this._initMetaNumber();
-			var bitElDiv = $('<div>' + mataEls + '</div>');
-			bitElDiv.css({
-				'width':this.options.width,
-				'float': 'left'
-			});
-			var bitEl = $('<span></span>')
-				.html(bitElDiv)
-				.css({
-					'display': 'inline-block',
-					'float': 'left',
-					'overflow': 'hidden',
-					'height': '20px'
-				});
+			var bitElDiv = $('<div class="rollingNumber_item">' + mataEls + '</div>');
+			bitElDiv.css({'width':this.options.width});
+			var bitEl = $('<span class="rollingNumber_bit"></span>')
+				.html(bitElDiv);
 			return bitEl;
 		},
 		//生成没个位置的全部数字0-9
