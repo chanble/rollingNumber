@@ -5,9 +5,9 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="description" content="Rollingnumber : rolling number card jquery plugin 一个滚动数字牌jquery插件">
-    <script charset="utf-8" src="https://raw.githubusercontent.com/chanble/rollingNumber/master/jquery.min.js"></script>
-    <script charset="utf-8" src="https://raw.githubusercontent.com/chanble/rollingNumber/master/jQuery.rollingNumber.js"></script>
-    <link rel="stylesheet" type="text/css" media="screen" href="https://raw.githubusercontent.com/chanble/rollingNumber/master/css/rollingNumber_base.css">
+    <script charset="utf-8" src="javascripts/jquery.min.js"></script>
+    <script charset="utf-8" src="javascripts/jQuery.rollingNumber.js"></script>
+    <link rel="stylesheet" type="text/css" href="stylesheets/rollingNumber_base.css">
 
     <title>Rollingnumber</title>
   </head>
@@ -39,7 +39,7 @@
     <span id="rollingnumber"></span>
     <script charset="utf-8">
         $(document).ready(function(){
-				$("#rollingnumber").rollingNumber(1234).start(function(){
+				$("#rollingnumber").rollingNumber(1234567890).start(function(){
 					return Math.floor(Math.random() * Math.pow(10, Math.floor(Math.random() * 10)));
 				});
 			});

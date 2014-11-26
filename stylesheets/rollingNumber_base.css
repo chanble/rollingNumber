@@ -1,0 +1,9 @@
+.rollingNumber_item{
+	float: left;
+	position: relative;
+}
+.rollingNumber_bit{
+	display: inline-block;
+	overflow: hidden;
+	height: 20px;
+}
