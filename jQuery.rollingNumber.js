@@ -6,9 +6,7 @@
  */
 (function($){
 	$.fn.rollingNumber = function(opts){
-		$.each(this, function (i, v){
-			return new RollingNumber($(v),opts);
-		});
+		return new RollingNumber($(this),opts);
 	};
 	var RollingNumber = function(el, opts){
 		var that = this;
@@ -19,25 +17,31 @@
 			'url' : 'http://www.youwebsite.com/api/',//url ,local
 			'intervalTime' : '3',//间隔时间
 			'number' : 123,//数字位数
+			'speed' : 1000, //数字转换速度
+			'time' : 2000 //定时执行间隔时间
 		};
 
 		//设置数字
 		//number数字，如果number用0-9,还可以传第二个参数表示第几位(从左数)
 		this.setNumber = function(newNum){
 			if(newNum < 0){
-				console.error('"newNum" is not a positive number');
+				console.error('"newNum"'+ newNum + ' is not a positive number');
+				return ;
+			}
+			var numberString = newNum.toString();
+			var pre0count = this.options.numberSize - numberString.length;
+
+			if(pre0count < 0){
+				console.error('"newNum"(' + newNum +') is too large out of number bit');
 				return ;
 			}
 			if(newNum < 10 && arguments.length > 1){
-				console.log(arguments);
 				var n = arguments[1];
 				var v = arguments[0];
 				var top_px = setItemTop(v);
-				this.el.find('div.rollingNumber_item').eq(n).css('top', top_px);
+				this.el.find('div.rollingNumber_item').eq(n).animate({'top': top_px}, this.options.speed);
 			}else{
-				var numberString = newNum.toString();
-				console.log(numberString);
-				var pre0count = this.options.numberSize - numberString.length;
+				//位数不够前导0
 				numberString = (function(prec){
 					var result = '';
 					for(var i = 0; i < prec; i++){
@@ -45,13 +49,32 @@
 					}
 					return result;
 				})(pre0count) + numberString;
-				console.log()
 				for(var i = 0; i < numberString.length; i++){
 					this.setNumber(numberString[i], i);
 				}
+				
 			}
 		};
-
+		//开始定时执行
+		//地一个参数表示定时执行的得到数字的回调函数
+		this.start = function (getNumberCallback){
+			var that = this;
+			if (typeof(getNumberCallback) == 'function'){
+				this.setNumber(getNumberCallback());
+			}else if(typeof(getNumberCallback) == 'number'){
+				setTimeout(function(){
+					that.setNumber(getNumberCallback);
+				},this.options.time);
+			}else{
+			}
+			setTimeout(function(){
+				that.start(getNumberCallback);
+			}, this.options.time);
+		}
+		
+		if(typeof(opts) == 'number'){
+			opts = {'number': opts};
+		}
 		this.options = $.extend(false,defaultOpts, opts);
 		this.options.numberSize = this.options.number.toString().length;
 		this.el = el;
